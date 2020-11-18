@@ -221,3 +221,122 @@ BufferedReader extends Reader
     - charReader
     - readLine()
 
+Writers
+
+Writing Characters into Files
+
+Writing Characters into In-Memory
+
+
+
+Append a single character or a string
+    -   Write a single character or string
+        ```java
+            Writer writer = ...
+            writer.write('H');
+            writer.write("Hello World!");
+            writer.write("Hello World!",0,5); //Writes Hello  
+            String hello = "Hello World!";
+            writer.write(hello.toCharArray(),0,5)
+            //Note: write() does not return any value
+        ```
+    -   Handling Exceptions
+        ```java
+            try(Writer writer = ...){
+                writer.write("Hello World!");
+            } catch (IOException e) {
+                //Handle exception
+            }  
+        ```
+    - Creating Writers
+        - Type
+            - Disk
+                - FileWriter - Writes to file
+                        ```java
+                            File file = new File("files/data.txt);
+                            try(Writer writer = new FileWriter(file);){ //new FileWriter(file,true) will append to existing file
+                                writer.write("Hello World!");
+                            } catch (IOException e) {
+                                //Handle exception
+                            }  
+                        ```
+            - In-memory
+                - CharArrayWriter
+                - StringWriter - Writes to a StringBuffer
+        - Behavior
+            - BufferedWriter
+                ```java
+                    File file = new File("files/data.txt);
+                    try(Writer writer = new FileWriter(file);
+                        BufferedWriter bw = new BufferedWriter(writer)){ 
+                        bw.write("Hello World!");
+                    } catch (IOException e) {
+                        //Handle exception
+                    }  
+                ```
+                - By default uses UTF-8 charset
+                - Java 7 way
+                                ```java
+                                    Path path = Paths.get("files/data.txt);
+                                    try(BufferedWriter bw = Files.newBufferedWriter(path)){  
+                                    //To specifiy a charset you can use Files.newBufferedWriter(path, StandardCharsets.ISO_8859_1))
+                                        bw.write("Hello World!");
+                                    } catch (IOException e) {
+                                        //Handle exception
+                                    }  
+                                ```
+                - To specifiy a charset you can use Files.newBufferedWriter(path, StandardCharsets.ISO_8859_1))
+                - To specifiy OpenOption you can use Files.newBufferedWriter(path, StandardOpenOption.CREATE))
+                - Various OpenOption, 
+                    - WRITE,APPEND
+                    - CREATE, CREATE_NEW
+                    - DELETE_ON_CLOSE - To create temp files
+            - PrintWriter
+                ```java
+                    File file = new File("files/data.txt);
+                    try(Writer writer = new FileWriter(file);
+                        PrintWriter pw= new PrintWriter(writer)){ 
+                        pw.write("Hello World!");
+                    } catch (IOException e) {
+                        //Handle exception
+                    }  
+                ```
+                - Syntax same as sprintf of Unix
+                                    
+Writer
+    close()
+    flush()
+    write(char[], int, int)
+    
+    append(char)
+    append(CharSequence)
+    append(CharSequence, int,  int)
+    write(char[])
+    write(int)
+    write(String)
+    write(String,int,int)
+    
+FileWriter extends Writer
+    Uses
+        File
+    implements
+        close()
+        flush()
+        write(char[], int, int)
+        
+StringWriter extends Writer
+    Uses
+        StringBuffer
+    implements
+        close()
+        flush()
+        write(char[], int, int)
+        
+BufferedWriter extends Writer
+    Uses
+        Another Writer using composition relationship, i.e specified during object creation
+        It could be a FileWriter, StringWriter or any other writer
+    New method added
+        newLine()
+    
+flush() - > triggers System call
